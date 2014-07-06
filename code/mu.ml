@@ -1,7 +1,11 @@
 open Core.Std
 
 let () =
-  printf "cow\n"
+  let open Regex in
+      let r = (Regex.trans_of_string_exn "LDRA") in
+      let exp = r <|> (r <.> r) in
+      let s = Regex.to_string exp in
+      printf "%s\n" s
   (*let fsm =
     Fsm.create
       [
