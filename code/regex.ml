@@ -1,45 +1,28 @@
 open Core.Std
 
-
 module Transition : sig
   type t
-      
+
   val of_char : char -> t
     
   val to_string : t -> string
 end = struct
   type t = | U | D | L | R | A | B | S | T | N
-      
+
   let of_char c = match c with
-      'U' -> U
-    | 'D' -> D
-    | 'L' -> L
-    | 'R' -> R
-    | 'A' -> A
-    | 'B' -> B
-    | 'S' -> S
-    | 'T' -> T
-    | 'N' -> N
+      'U' -> U | 'D' -> D | 'L' -> L | 'R' -> R | 'A' -> A | 'B' -> B | 'S' -> S
+    | 'T' -> T | 'N' -> N
     | _   -> raise (Failure
                       (String.concat
                          [String.of_char c; " is not a valid transition"]))
         
   let to_string trans = match trans with
-      U -> "U"
-    | D -> "D"
-    | L -> "L"
-    | R -> "R"
-    | A -> "A"
-    | B -> "B"
-    | S -> "S"
-    | T -> "T"
-    | N -> "N"
+      U -> "U" | D -> "D" | L -> "L" | R -> "R" | A -> "A" | B -> "B" | S -> "S"
+    | T -> "T" | N -> "N"
 end
-  
-type transition = Transition.t
-    
+
 type t = | Null
-         | Char of transition
+         | Char of Transition.t
          | Union of t * t
          | Concat of t * t
          | Star of t

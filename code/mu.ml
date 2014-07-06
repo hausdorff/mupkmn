@@ -2,8 +2,8 @@ open Core.Std
 
 let () =
   let open Regex in
-      let r = (Regex.trans_of_string_exn "LDRA") in
-      let exp = r <|> (r <.> r) in
+      let r1 = Regex.trans_of_string_exn "LRU" in
+      let exp = r1 <|> (r1 <.> r1) in
       let s = Regex.to_string exp in
       printf "%s\n" s
   (*let fsm =
