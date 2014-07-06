@@ -3,17 +3,27 @@ open Core.Std
 module Point : sig
   type t
   val create : int -> int -> t
+  val x : t -> int
+  val y : t -> int
 end = struct
   type t = (int*int)
   let create x y = (x,y)
+  let x t = fst t
+  let y t = snd t
 end
 
 module Edge : sig
   type t
   val create : Point.t -> Point.t -> Regex.t -> t
+  val pt1 : t -> Point.t
+  val pt2 : t -> Point.t
+  val label : t -> Regex.t
 end = struct
   type t = { pt1: Point.t; pt2: Point.t; label: Regex.t }
   let create pt1 pt2 label = { pt1 = pt1; pt2 = pt2; label = label }
+  let pt1 t = t.pt1
+  let pt2 t = t.pt2
+  let label t = t.label
 end
 
 module Pointset : sig
