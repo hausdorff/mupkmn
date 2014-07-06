@@ -1,13 +1,15 @@
 open Core.Std
 
-let () =
+(*let regex_test =
   let open Regex in
       let r1 = Regex.trans_of_string_exn "LRU" in
       let exp = r1 <|> (r1 <.> r1) in
       let s = Regex.to_string exp in
-      printf "%s\n" s
-  (*let fsm =
-    Fsm.create
+      printf "%s\n" s*)
+
+let fsm_test =
+  let fsm =
+    Fsm.of_list
       [
         (0,0), [(0,0), "(L|U|D)"; (1,0), "R"];
         (1,1), [(1,1), "(R|D|L)"; (1,0), "U"];
@@ -15,10 +17,14 @@ let () =
         (2,0), [(1,0), "L"; (2,0), "(U|R|D)"];
       ]
   in
-  let to_pts = Fsm.links_from fsm (0,0) ~f:(fun pt -> pt <> (0,0)) in
+  printf "cow\n"
+  (*let to_pts = Fsm.links_from fsm (0,0) ~f:(fun pt -> pt <> (0,0)) in
   match to_pts with
       None -> printf "no results. sad cow.\n"
     | Some states -> (List.iter states ~f:(fun (x,y) -> printf "(%d,%d)\n" x y))*)
+        
+let () =
+  fsm_test
   (*match (Fsm.lookup_regex fsm (0,0) (0,0)) with
       None -> printf "no result\n"
     | Some x -> printf "%s\n" x*)
