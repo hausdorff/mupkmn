@@ -22,10 +22,10 @@ module Pointset : sig
   val add : t -> Point.t -> t
   val of_list : Point.t list -> t
 end = struct
-  type t = Pointset.t
-  let singleton pt = Pointset.singleton pt
-  let add t pt = Pointset.add t pt
-  let of_list list = Pointset.of_list list
+  type t = Point.t Set.Poly.t
+  let singleton pt = Set.Poly.singleton pt
+  let add t pt = Set.Poly.add t pt
+  let of_list list = Set.Poly.of_list list
 end
 
 module PointAssoc : sig
