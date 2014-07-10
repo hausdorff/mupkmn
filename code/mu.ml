@@ -17,12 +17,12 @@ let fsm_test =
         (2,0), [(1,0), "L"; (2,0), "(U|R|D)"];
       ]
   in
-  printf "cow\n"
+  Fsm.iter fsm
   (*let to_pts = Fsm.links_from fsm (0,0) ~f:(fun pt -> pt <> (0,0)) in
   match to_pts with
       None -> printf "no results. sad cow.\n"
     | Some states -> (List.iter states ~f:(fun (x,y) -> printf "(%d,%d)\n" x y))*)
-        
+
 let () =
   fsm_test
   (*match (Fsm.lookup_regex fsm (0,0) (0,0)) with

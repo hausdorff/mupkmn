@@ -5,11 +5,15 @@ module Point : sig
   val create : int -> int -> t
   val x : t -> int
   val y : t -> int
+  val to_string : t -> string
 end = struct
   type t = (int*int)
   let create x y = (x,y)
   let x t = fst t
   let y t = snd t
+  let to_string (x,y) =
+    String.concat
+      ["("; Int.to_string x; ","; Int.to_string y; ")"]
 end
 
 module Edge : sig
@@ -31,11 +35,13 @@ module Pointset : sig
   val singleton : Point.t -> t
   val add : t -> Point.t -> t
   val of_list : Point.t list -> t
+  val iter : t -> f:(Point.t -> unit) -> unit
 end = struct
   type t = Point.t Set.Poly.t
   let singleton pt = Set.Poly.singleton pt
   let add t pt = Set.Poly.add t pt
   let of_list list = Set.Poly.of_list list
+  let iter t ~f = Set.Poly.iter t ~f:f
 end
 
 module PointAssoc : sig
@@ -44,6 +50,7 @@ module PointAssoc : sig
   val add : t -> Point.t -> Pointset.t -> t
   val add_multi : t -> Point.t -> Point.t -> t
   val of_list_exn : (Point.t * Pointset.t) list -> t
+  val iter : t -> fu:(Point.t -> Point.t -> unit) -> unit
 end = struct
   type t = (Point.t, Pointset.t) Map.Poly.t
   let empty = Map.Poly.empty
@@ -55,6 +62,16 @@ end = struct
     in
     Map.Poly.add t ~key:pt1 ~data:new_ptset
   let of_list_exn list = Map.Poly.of_alist_exn list
+
+  let iter t ~fu =
+    Map.Poly.iter
+      t
+      ~f:(fun ~key ~data ->
+          let point1 = key in
+          let pointset = data in
+          Pointset.iter
+            pointset
+            ~f:(fun point2 -> fu point1 point2))
 end
 
 type t = { points_to: PointAssoc.t;
@@ -97,9 +114,6 @@ end = struct
 end
 
 module Topology : sig
-  (*val loops_through_to_rm : t -> to_rm:int -> filter:(Pointset.t) -> Pointset.t
-  val points_at_to_rm : t -> to_rm:int -> filter:Pointset.t -> Pointset.t*)
-
   val bridge_to_and_from_pts : t -> to_rm:int -> t
   val update_to_and_from_selfloops : t -> to_rm:int -> t
   val remove_all_to : t -> to_rm:int -> t
@@ -110,14 +124,19 @@ end = struct
   let remove_all_to t ~to_rm = t
   let remove_all_from t ~to_rm = t
 end
-  
+
 let empty = { points_to = PointAssoc.empty;
-              points_from = PointAssoc.empty
-            }
+              points_from = PointAssoc.empty }
 
 let of_list list = { points_to = Helpers.mk_points_to list;
-                     points_from = Helpers.mk_points_from list
-                   }
+                     points_from = Helpers.mk_points_from list }
+
+let iter t =
+  let pm = t.points_to in
+  PointAssoc.iter pm ~fu:(fun pt1 pt2 ->
+                          printf "%s %s\n"
+                                 (Point.to_string pt1)
+                                 (Point.to_string pt2))
 
 let remove t to_rm =
   (*
