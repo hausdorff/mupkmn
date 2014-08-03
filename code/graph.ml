@@ -45,9 +45,12 @@ let empty = { points_to = Point_assoc.empty;
 let of_list list = { points_to = Helpers.mk_points_to list;
                      points_from = Helpers.mk_points_from list }
 
-let iter t =
+let iter t ~f =
   let pm = t.points_to in
-  Point_assoc.iter pm ~fu:(fun pt1 pt2 ->
-                          printf "%s %s\n"
-                                 (Point.to_string pt1)
-                                 (Point.to_string pt2))
+  Point_assoc.iter pm ~fu:f
+
+let print t =
+  iter t ~f:(fun pt1 pt2 ->
+           printf "%s %s\n"
+                  (Point.to_string pt1)
+                  (Point.to_string pt2))

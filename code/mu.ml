@@ -17,7 +17,7 @@ let fsm_test =
         (2,0), [(1,0), "L"; (2,0), "(U|R|D)"];
       ]
   in
-  Graph.iter fsm
+  Graph.print fsm
   (*let to_pts = Graph.links_from fsm (0,0) ~f:(fun pt -> pt <> (0,0)) in
   match to_pts with
       None -> printf "no results. sad cow.\n"
