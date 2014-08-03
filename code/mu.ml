@@ -7,24 +7,43 @@ open Core.Std
       let s = Regex.to_string exp in
       printf "%s\n" s*)
 
-let fsm_test =
-  let fsm =
-    Graph.of_list
-      [
-        (0,0), [(0,0), "(L|U|D)"; (1,0), "R"];
-        (1,1), [(1,1), "(R|D|L)"; (1,0), "U"];
-        (1,0), [(0,0), "L"; (1,0), "U"; (1,1), "D"; (2,0), "R"];
-        (2,0), [(1,0), "L"; (2,0), "(U|R|D)"];
-      ]
-  in
-  Graph.print_edges fsm
+let print_list l =
+  List.iter
+    l
+    ~f:(fun (pt1,pt2) ->
+        printf "%s -> %s\n"
+               (Point.to_string pt1)
+               (Point.to_string pt2))
+
+let graph_test =
+  Graph.of_list
+    [
+      (0,0), [(0,0), "(L|U|D)"; (1,0), "R"];
+      (1,1), [(1,1), "(R|D|L)"; (1,0), "U"];
+      (1,0), [(0,0), "L"; (1,0), "U"; (1,1), "D"; (2,0), "R"];
+      (2,0), [(1,0), "L"; (2,0), "(U|R|D)"];
+    ]
+
+let fsm_test () =
+  Graph.print_edges graph_test
   (*let to_pts = Graph.links_from fsm (0,0) ~f:(fun pt -> pt <> (0,0)) in
   match to_pts with
       None -> printf "no results. sad cow.\n"
     | Some states -> (List.iter states ~f:(fun (x,y) -> printf "(%d,%d)\n" x y))*)
 
+let graph_adj_test () =
+  let pt = Point.create 1 0 in
+  let edges =
+    Graph.filter_edges_to
+      graph_test
+      pt
+      ~f:(fun pt1 pt2 -> not (pt1 = pt2))
+  in
+  print_list edges
+
 let () =
-  fsm_test
+  printf "cow\n";
+  graph_adj_test ()
   (*match (Graph.lookup_regex fsm (0,0) (0,0)) with
       None -> printf "no result\n"
     | Some x -> printf "%s\n" x*)
