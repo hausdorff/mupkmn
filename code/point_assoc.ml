@@ -36,3 +36,8 @@ let filter_edges t ~f =
   List.filter
     (to_list t)
     ~f:(fun (pt1,pt2) -> f pt1 pt2)
+
+let filter_adj_pts (t:t) pt ~f =
+  match Map.Poly.find t pt with
+    None -> Pointset.empty
+  | Some ptset -> Pointset.filter ptset ~f:(f pt)
