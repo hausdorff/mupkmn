@@ -1,5 +1,4 @@
-let bridge_pts t pt1 ~to_rm pt2 =
-  t
+let bridge_pts t pt1 ~to_rm pt2 = t
 let bridge_to_and_from_pts t ~to_rm = t
 let update_to_and_from_selfloops t ~to_rm = t
 let remove_all_to t ~to_rm = t
