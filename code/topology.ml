@@ -15,7 +15,7 @@ let remove t to_rm =
    * Bridge each point from each of those groups.
    * Remove each edge pointing to to_rm.
    * Remove each edge pointing out of to_rm
-  *)
+   *)
   (*let loops_through_to_rm = c in
   let points_at_to_rm = a in
   let points_away_from_to_rm = b in*)
