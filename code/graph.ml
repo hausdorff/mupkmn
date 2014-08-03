@@ -19,9 +19,9 @@ end = struct
       List.map
         list
         ~f:(fun ((x,y),transitions) ->
-          let pt = Point.create x y in
-          let ptset = ptset_of_transitions transitions in
-          (pt,ptset))
+            let pt = Point.create x y in
+            let ptset = ptset_of_transitions transitions in
+            (pt,ptset))
     in
     Point_assoc.of_list_exn ptmap_list
 
@@ -30,13 +30,13 @@ end = struct
       list
       ~init:Point_assoc.empty
       ~f:(fun acc ((x,y),transitions) ->
-        let pt = Point.create x y in
-        List.fold
-          transitions
-          ~init:acc
-          ~f:(fun acc' ((x',y'),_) ->
-            let pt' = Point.create x' y' in
-            Point_assoc.add_multi acc' pt' pt))
+          let pt = Point.create x y in
+          List.fold
+            transitions
+            ~init:acc
+            ~f:(fun acc' ((x',y'),_) ->
+                let pt' = Point.create x' y' in
+                Point_assoc.add_multi acc' pt' pt))
 end
 
 let empty = { points_to = Point_assoc.empty;
@@ -45,12 +45,11 @@ let empty = { points_to = Point_assoc.empty;
 let of_list list = { points_to = Helpers.mk_points_to list;
                      points_from = Helpers.mk_points_from list }
 
-let iter t ~f =
-  let pm = t.points_to in
-  Point_assoc.iter pm ~fu:f
+let iter_edges t ~f =
+  Point_assoc.iter t.points_to ~fu:f
 
-let print t =
-  iter t ~f:(fun pt1 pt2 ->
-           printf "%s %s\n"
-                  (Point.to_string pt1)
-                  (Point.to_string pt2))
+let print_edges t =
+  iter_edges t ~f:(fun pt1 pt2 ->
+                   printf "%s -> %s\n"
+                          (Point.to_string pt1)
+                          (Point.to_string pt2))
