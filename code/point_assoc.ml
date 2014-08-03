@@ -10,7 +10,8 @@ let add_multi t pt1 pt2 =
   in
   Map.Poly.add t ~key:pt1 ~data:new_ptset
 let of_list_exn list = Map.Poly.of_alist_exn list
-let iter t ~fu =
+let iter t ~f =
+  let func_alias = f in
   Map.Poly.iter
     t
     ~f:(fun ~key ~data ->
@@ -18,4 +19,4 @@ let iter t ~fu =
         let pointset = data in
         Pointset.iter
           pointset
-          ~f:(fun point2 -> fu point1 point2))
+          ~f:(fun point2 -> func_alias point1 point2))

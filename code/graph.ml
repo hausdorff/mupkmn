@@ -46,7 +46,7 @@ let of_list list = { points_to = Helpers.mk_points_to list;
                      points_from = Helpers.mk_points_from list }
 
 let iter_edges t ~f =
-  Point_assoc.iter t.points_to ~fu:f
+  Point_assoc.iter t.points_to ~f:f
 
 let print_edges t =
   iter_edges t ~f:(fun pt1 pt2 ->
