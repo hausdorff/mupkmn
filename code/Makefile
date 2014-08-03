@@ -1,4 +1,4 @@
-all: mu.ml fsm.ml fsm.mli
+all: point.mli point.ml edge.mli edge.ml point_assoc.mli point_assoc.ml pointset.mli pointset.ml topology.mli topology.ml regex.mli regex.ml mu.ml graph.ml graph.mli
 	corebuild mu.native
 
 run: all
