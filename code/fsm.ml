@@ -114,11 +114,14 @@ end = struct
 end
 
 module Topology : sig
-  val bridge_to_and_from_pts : t -> to_rm:int -> t
-  val update_to_and_from_selfloops : t -> to_rm:int -> t
-  val remove_all_to : t -> to_rm:int -> t
-  val remove_all_from : t -> to_rm:int -> t
+  val bridge_pts : t -> Point.t -> to_rm:Point.t -> Point.t -> t
+  val bridge_to_and_from_pts : t -> to_rm:Point.t -> t
+  val update_to_and_from_selfloops : t -> to_rm:Point.t -> t
+  val remove_all_to : t -> to_rm:Point.t -> t
+  val remove_all_from : t -> to_rm:Point.t -> t
 end = struct
+  let bridge_pts t pt1 ~to_rm pt2 =
+    t
   let bridge_to_and_from_pts t ~to_rm = t
   let update_to_and_from_selfloops t ~to_rm = t
   let remove_all_to t ~to_rm = t
