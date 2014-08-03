@@ -53,3 +53,25 @@ let print_edges t =
                    printf "%s -> %s\n"
                           (Point.to_string pt1)
                           (Point.to_string pt2))
+
+let filter_edges_from t pt ~f =
+  let adj_pts =
+    Point_assoc.filter_adj_pts
+      t.points_from
+      pt
+      ~f:f
+  in
+  List.bind
+    (Pointset.to_list adj_pts)
+    (fun pt' -> [(pt,pt')])
+
+let filter_edges_to t pt ~f =
+  let adj_pts =
+    Point_assoc.filter_adj_pts
+      t.points_to
+      pt
+      ~f:f
+  in
+  List.bind
+    (Pointset.to_list adj_pts)
+    (fun pt' -> [(pt,pt')])
