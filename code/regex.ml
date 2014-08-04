@@ -35,6 +35,23 @@ let (<*>) r  = Star r
 
 let of_char c = Char (Transition.of_char c)
 
+let union_of_string_exn s =
+  let chars = String.to_list s in
+  let filtered =
+    List.filter
+      chars
+      ~f:(fun c -> (c <> '(') && (c <> ')') && (c <> '|'))
+  in
+  match filtered with
+      []        -> Null
+    | c::[]     -> of_char c
+    | c::c'::[] -> Union (of_char c, of_char c')
+    | c::c'::cs ->
+      List.fold
+        cs
+        ~init:(Union (of_char c, of_char c'))
+        ~f:(fun acc c -> (Union (acc, of_char c)))
+
 let trans_of_string_exn s =
   match (String.to_list s) with
       []        -> Null

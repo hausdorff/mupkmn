@@ -41,9 +41,15 @@ let graph_adj_test () =
   in
   print_list edges
 
+let regex_test () =
+  let open Regex in
+  let r1 = Regex.union_of_string_exn "(R|D|U)" in
+  let r2 = Regex.union_of_string_exn "(L|R|U)" in
+  printf "%s\n" (Regex.to_string (r1 <|> r2))
+
 let () =
   printf "cow\n";
-  graph_adj_test ()
+  regex_test ()
   (*match (Graph.lookup_regex fsm (0,0) (0,0)) with
       None -> printf "no result\n"
     | Some x -> printf "%s\n" x*)
