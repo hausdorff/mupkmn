@@ -1,7 +1,8 @@
 open Core.Std
 
 type t = { points_to: Point_assoc.t;
-           points_from: Point_assoc.t }
+           points_from: Point_assoc.t;
+           edges: Edgeset.t }
 
 (* The helper methods for the FSM functions. *)
 module Helpers : sig
@@ -9,6 +10,8 @@ module Helpers : sig
       : ((int*int) * ((int*int) * string) list) list -> Point_assoc.t
   val mk_points_from
       : ((int*int) * ((int*int) * string) list) list -> Point_assoc.t
+  val mk_edges
+      : ((int*int) * ((int*int) * string) list) list -> Edgeset.t
 end = struct
   let ptset_of_transitions transitions =
     Pointset.of_list
@@ -39,13 +42,30 @@ end = struct
             ~f:(fun acc' ((x',y'),_) ->
                 let pt' = Point.create x' y' in
                 Point_assoc.add_multi acc' pt' pt))
+
+  let mk_edges list =
+    List.fold
+      list
+      ~init:Edgeset.empty
+      ~f:(fun acc ((x,y),transitions) ->
+          let pt = Point.create x y in
+          List.fold
+            transitions
+            ~init:acc
+            ~f:(fun acc' ((x',y'),(regex_str:string)) ->
+                let pt' = Point.create x' y' in
+                let regex = Regex.trans_of_string_exn regex_str in
+                let edge = Edge.create pt pt' regex in
+                Edgeset.add acc' edge))
 end
 
 let empty = { points_to = Point_assoc.empty;
-              points_from = Point_assoc.empty }
+              points_from = Point_assoc.empty;
+              edges = Edgeset.empty }
 
 let of_list list = { points_to = Helpers.mk_points_to list;
-                     points_from = Helpers.mk_points_from list }
+                     points_from = Helpers.mk_points_from list;
+                     edges = Helpers.mk_edges list }
 
 let iter_edges t ~f =
   Point_assoc.iter t.points_to ~f:f
