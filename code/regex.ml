@@ -4,7 +4,7 @@ module Transition : sig
   type t
 
   val of_char : char -> t
-    
+
   val to_string : t -> string
 end = struct
   type t = | U | D | L | R | A | B | S | T | N
@@ -15,7 +15,7 @@ end = struct
     | _   -> raise (Failure
                       (String.concat
                          [String.of_char c; " is not a valid transition"]))
-        
+
   let to_string trans = match trans with
       U -> "U" | D -> "D" | L -> "L" | R -> "R" | A -> "A" | B -> "B" | S -> "S"
     | T -> "T" | N -> "N"
@@ -28,9 +28,9 @@ type t = | Null
          | Star of t
 
 let (<|>) r1 r2 = Union (r1, r2)
-  
+
 let (<.>) r1 r2 = Concat (r1, r2)
-  
+
 let (<*>) r  = Star r
 
 let of_char c = Char (Transition.of_char c)
