@@ -5,8 +5,10 @@ type t = { points_to: Point_assoc.t;
 
 (* The helper methods for the FSM functions. *)
 module Helpers : sig
-  val mk_points_to : ((int*int) * ((int*int) * 'a) list) list -> Point_assoc.t
-  val mk_points_from : ((int*int) * ((int*int) * 'a) list) list -> Point_assoc.t
+  val mk_points_to
+      : ((int*int) * ((int*int) * string) list) list -> Point_assoc.t
+  val mk_points_from
+      : ((int*int) * ((int*int) * string) list) list -> Point_assoc.t
 end = struct
   let ptset_of_transitions transitions =
     Pointset.of_list
