@@ -8,6 +8,11 @@ val of_list_exn    : (Point.t * Pointset.t) list -> t
 val to_list        : t -> (Point.t * Point.t) list
 val iter           : t -> f:(Point.t -> Point.t -> unit) -> unit
 val filter_edges
-    : t -> f:(Point.t -> Point.t -> bool) -> (Point.t * Point.t) list
+    : t ->
+      f:(Point.t -> Point.t -> bool) ->
+      (Point.t * Point.t) list
 val filter_adj_pts
-    : t -> Point.t -> f:(Point.t -> Point.t -> bool) -> Pointset.t
+    : t ->
+      Point.t ->
+      f:(Point.t -> Point.t -> bool) ->
+      Pointset.t
