@@ -7,13 +7,14 @@ open Core.Std
       let s = Regex.to_string exp in
       printf "%s\n" s*)
 
-let print_list l =
+let print_edges l =
   List.iter
     l
-    ~f:(fun (pt1,pt2) ->
-        printf "%s -> %s\n"
-               (Point.to_string pt1)
-               (Point.to_string pt2))
+    ~f:(fun e ->
+        printf "%s -> %s : %s\n"
+               (Point.to_string (Edge.pt1 e))
+               (Point.to_string (Edge.pt2 e))
+               (Regex.to_string (Edge.label e)))
 
 let graph_test =
   Graph.of_list
@@ -31,15 +32,15 @@ let fsm_test () =
       None -> printf "no results. sad cow.\n"
     | Some states -> (List.iter states ~f:(fun (x,y) -> printf "(%d,%d)\n" x y))*)
 
-let graph_adj_test () =
-  let pt = Point.create 1 0 in
+let graph_adj_test tup =
+  let pt = Point.of_tup tup in
   let edges =
     Graph.filter_edges_to
       graph_test
       pt
       ~f:(fun pt1 pt2 -> not (pt1 = pt2))
   in
-  print_list edges
+  print_edges edges
 
 let regex_test () =
   let open Regex in
@@ -47,9 +48,28 @@ let regex_test () =
   let r2 = Regex.union_of_string_exn "(L|R|U)" in
   printf "%s\n" (Regex.to_string (r1 <|> r2))
 
+let graph_adj_test' tup =
+  let pt = Point.of_tup tup in
+  let edges =
+    Graph.filter_edges_to
+      graph_test
+      pt
+      ~f:(fun pt1 pt2 -> true)
+  in
+  print_edges edges
+
+let graph_adj_test'' tup =
+  let pt = Point.of_tup tup in
+  let edges =
+    Graph.filter_edges_from
+      graph_test
+      pt
+      ~f:(fun pt1 pt2 -> true)
+  in
+  print_edges edges
+
 let () =
-  printf "cow\n";
-  regex_test ()
+  graph_adj_test'' (0,0)
   (*match (Graph.lookup_regex fsm (0,0) (0,0)) with
       None -> printf "no result\n"
     | Some x -> printf "%s\n" x*)
