@@ -54,9 +54,8 @@ end = struct
             ~init:acc
             ~f:(fun acc' ((x',y'),(regex_str:string)) ->
                 let pt' = Point.create x' y' in
-                let regex = Regex.trans_of_string_exn regex_str in
-                let edge = Edge.create pt pt' regex in
-                Edgeset.add acc' edge))
+                let regex = Regex.union_of_string_exn regex_str in
+                Edgeset.add acc' pt pt' regex))
 end
 
 let empty = { points_to = Point_assoc.empty;
@@ -85,7 +84,8 @@ let filter_edges_from t pt ~f =
   in
   List.bind
     (Pointset.to_list adj_pts)
-    (fun pt' -> [(pt,pt')])
+    (fun pt' ->
+     [Edgeset.find_exn t.edges pt pt'])
 
 let filter_edges_to t pt ~f =
   let adj_pts =
@@ -96,4 +96,5 @@ let filter_edges_to t pt ~f =
   in
   List.bind
     (Pointset.to_list adj_pts)
-    (fun pt' -> [(pt,pt')])
+    (fun pt' ->
+     [Edgeset.find_exn t.edges pt pt'])
