@@ -97,4 +97,4 @@ let filter_edges_to t pt ~f =
   List.bind
     (Pointset.to_list adj_pts)
     (fun pt' ->
-     [Edgeset.find_exn t.edges pt pt'])
+     [Edgeset.find_exn t.edges pt' pt])
