@@ -16,6 +16,13 @@ let print_edges l =
                (Point.to_string (Edge.pt2 e))
                (Regex.to_string (Edge.label e)))
 
+let print_points l =
+  List.iter
+    l
+    ~f:(fun p ->
+        printf "%s\n"
+               (Point.to_string p))
+
 let graph_test =
   Graph.of_list
     [
@@ -54,7 +61,7 @@ let graph_adj_test' tup =
     Graph.filter_edges_to
       graph_test
       pt
-      ~f:(fun pt1 pt2 -> true)
+      ~f:(fun pt1 pt2 -> pt1 <> pt2)
   in
   print_edges edges
 
@@ -64,12 +71,18 @@ let graph_adj_test'' tup =
     Graph.filter_edges_from
       graph_test
       pt
-      ~f:(fun pt1 pt2 -> true)
+      ~f:(fun pt1 pt2 -> pt1 <> pt2)
   in
   print_edges edges
 
+let graph_adj_test''' tup =
+  let pt = Point.of_tup tup in
+  let edges = Topology.remove graph_test pt
+  in
+  print_points edges
+
 let () =
-  graph_adj_test'' (0,0)
+  graph_adj_test''' (1,0)
   (*match (Graph.lookup_regex fsm (0,0) (0,0)) with
       None -> printf "no result\n"
     | Some x -> printf "%s\n" x*)
