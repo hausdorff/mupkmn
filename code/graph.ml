@@ -19,7 +19,7 @@ end = struct
          transitions
          ~f:(fun ((x,y),_) -> Point.create x y))
 
-  let mk_points_to list =
+  let mk_points_from list =
     let ptmap_list =
       List.map
         list
@@ -30,7 +30,7 @@ end = struct
     in
     Point_assoc.of_list_exn ptmap_list
 
-  let mk_points_from list =
+  let mk_points_to list =
     List.fold
       list
       ~init:Point_assoc.empty

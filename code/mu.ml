@@ -32,6 +32,12 @@ let graph_test =
       (2,0), [(1,0), "L"; (2,0), "URD"];
     ]
 
+let graph_test' =
+  Graph.of_list
+    [
+      (0,0), [(0,0), "LUD"; (1,0), "R"];
+    ]
+
 let fsm_test () =
   Graph.print_edges graph_test
   (*let to_pts = Graph.links_from fsm (0,0) ~f:(fun pt -> pt <> (0,0)) in
@@ -81,8 +87,18 @@ let graph_adj_test''' tup =
   in
   print_points edges
 
+let graph_adj_test'''' tup =
+  let pt = Point.of_tup tup in
+  let edges =
+    Graph.filter_edges_from
+      graph_test'
+      pt
+      ~f:(fun pt1 pt2 -> true)
+  in
+  print_edges edges
+
 let () =
-  graph_adj_test''' (1,0)
+  graph_adj_test'''' (0,0)
   (*match (Graph.lookup_regex fsm (0,0) (0,0)) with
       None -> printf "no result\n"
     | Some x -> printf "%s\n" x*)
