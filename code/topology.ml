@@ -1,3 +1,31 @@
+let points_to graph pt ~f =
+  let edges_to =
+    Graph.filter_edges_to
+      graph
+      pt
+      ~f:f
+  in
+  List.map
+    Edge.pt1
+    edges_to
+
+let points_from graph pt ~f =
+  let edges_from =
+    Graph.filter_edges_from
+      graph
+      pt
+      ~f:f
+  in
+  List.map
+    Edge.pt2
+    edges_from
+
+let selfloop_filter pt1 pt2 = pt1 <> pt2
+
+let bridge t pt1 pt2 = t
+
+let bridge_all t pt1 pt2 = t
+
 (*let remove t to_rm =
   (*
    * TODO:
@@ -16,30 +44,6 @@
   |> (Topology.update_to_and_from_selfloops ~to_rm:to_rm)
   |> (Topology.remove_all_to ~to_rm:to_rm)
   |> (Topology.remove_all_from ~to_rm:to_rm)*)
-
-let points_to t pt ~f =
-  let edges_to =
-    Graph.filter_edges_to
-      t
-      pt
-      ~f:f
-  in
-  List.map
-    Edge.pt1
-    edges_to
-
-let points_from t pt ~f =
-  let edges_from =
-    Graph.filter_edges_from
-      t
-      pt
-      ~f:(fun pt1 pt2 -> pt1 <> pt2)
-  in
-  List.map
-    Edge.pt2
-    edges_from
-
-let selfloop_filter pt1 pt2 = pt1 <> pt2
 
 let remove t ~to_rm =
   let pts_from = points_from t to_rm ~f:selfloop_filter in
